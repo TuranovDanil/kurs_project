@@ -46,9 +46,16 @@ Route::apiResources([
     'users' => UserController::class
 ]);
 
-Route::apiResources([
-    'categories' => CategoryController::class
-],['middleware' => ['auth', 'admin']]);
+Route::group([
+   'prefix' => 'categories',
+   'middleware' => ['auth'],
+], function ($router){
+    Route::get('', [CategoryController::class, 'index']);
+    Route::post('', [CategoryController::class, 'store'])->middleware('admin');
+    Route::get('/{category}', [CategoryController::class, 'show'] )->middleware('admin');
+    Route::patch('/{category}', [CategoryController::class, 'update'] )->middleware('admin');
+    Route::delete('/{category}', [CategoryController::class, 'destroy'] )->middleware('admin');
+});
 
 //provider
 Route::apiResources([
@@ -56,26 +63,21 @@ Route::apiResources([
 ],['middleware' => ['auth', 'provider']]);
 
 //client
-//Route::apiResources([
-//    'products' => ProductClientController::class
-//],['middleware' => ['auth', 'client']]);
 Route::group([
     'prefix' => 'products',
     'middleware' => ['auth','client'],
 ], function ($router) {
 
     Route::get('', [ProductClientController::class, 'index']);
-    Route::get('/{id}', [ProductClientController::class, 'show']);
-    Route::get('/{id}/select', [ProductClientController::class, 'select']);
+    Route::get('/{product}', [ProductClientController::class, 'show']);
+    Route::get('/{product}/select', [ProductClientController::class, 'select']);
 });
-
 
 Route::apiResources([
     'selected' => SelectedController::class
 ],['middleware' => ['auth', 'client']]);
 
-
-
+//not found
 Route::fallback(function (){
     return response() ->json([
         'message' => 'Page Not Found'], 404);

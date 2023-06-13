@@ -21,8 +21,8 @@ class UserResourse extends JsonResource
             'surname' => $this->surname,
             'telephone' => $this->telephone,
             'organization' => $this->organization,
-            'role' => $this->role,
-            'products' => ProductProviderResourse::collection($this->products)
+            'role' => $this->roles,
+            'banned' => $this->banned,
         ];
     }
 }

@@ -27,9 +27,8 @@ class ProductClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
         if ($product->deactivation == 1){
             return response()->json([
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
@@ -37,20 +36,14 @@ class ProductClientController extends Controller
         return new ProductClientResourse($product);
     }
 
-    public function select(Request $request, $id)
+    public function select(Product $product)
     {
-        $product = Product::findOrFail($id);
         if ($product->deactivation == 1){
             return response()->json([
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
-//
-//        if(Selected::where('id_product', $id)->orWhere('id_client', auth()->user()->id) !== null){
-//            return response()->json([
-//                'error' => ['code' => '422','message' => 'Already selected']], 422);
-//        }
         $selected = Selected::create(array_merge(
-            ['product_id' => $id, 'client_id' => auth()->user()->id]));
+            ['product_id' => $product->id, 'client_id' => auth()->user()->id]));
         return new SelectedResourse($selected);
     }
 

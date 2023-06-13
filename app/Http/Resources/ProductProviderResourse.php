@@ -17,10 +17,9 @@ class ProductProviderResourse extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'category_id' => $this->category_id,
+            'category' => CategoryProductResourse::make($this->category),
             'price' => $this->price,
             'description' => $this->description,
-            'user_id' => $this->user_id,
             'deactivation' => $this->deactivation
         ];
     }

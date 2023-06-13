@@ -9,7 +9,7 @@ use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\CategoryResourse;
 use App\Http\Resources\ClientResourse;
 use App\Http\Resources\ProductProviderResourse;
-use App\Http\Resources\UserResourse;
+use App\Http\Resources\UserProductResourse;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;

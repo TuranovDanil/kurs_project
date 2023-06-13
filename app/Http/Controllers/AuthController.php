@@ -7,7 +7,7 @@ use App\Http\Requests\ProviderRegisterRequest;
 use App\Http\Resources\CategoryResourse;
 use App\Http\Resources\ClientResourse;
 use App\Http\Resources\ProviderResourse;
-use App\Http\Resources\UserResourse;
+use App\Http\Resources\UserProductResourse;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;

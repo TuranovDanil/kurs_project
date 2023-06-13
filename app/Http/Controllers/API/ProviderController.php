@@ -8,7 +8,7 @@ use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Resources\CategoryResourse;
 use App\Http\Resources\ClientResourse;
-use App\Http\Resources\ProductResourse;
+use App\Http\Resources\ProductProviderResourse;
 use App\Http\Resources\UserResourse;
 use App\Models\Category;
 use App\Models\Product;
@@ -22,7 +22,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        return ProductResourse::collection(Product::where('user_id', auth()->user()->id)->get());
+        return ProductProviderResourse::collection(Product::where('user_id', auth()->user()->id)->get());
     }
 
     /**
@@ -32,7 +32,7 @@ class ProviderController extends Controller
     {
         $product = Product::create(array_merge($request->validated(),
             ['user_id' => auth()->user()->id]));
-        return new ProductResourse($product);
+        return new ProductProviderResourse($product);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProviderController extends Controller
             return response()->json([
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
-        return new ProductResourse($product);
+        return new ProductProviderResourse($product);
     }
 
     /**
@@ -57,7 +57,7 @@ class ProviderController extends Controller
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
         $product->update($request->validated());
-        return new ProductResourse($product);
+        return new ProductProviderResourse($product);
     }
 
     /**
@@ -70,7 +70,7 @@ class ProviderController extends Controller
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
         $product->delete();
-        return new ProductResourse($product);
+        return new ProductProviderResourse($product);
     }
 
 }

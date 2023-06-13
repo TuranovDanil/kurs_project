@@ -21,7 +21,7 @@ class UserRegisterResourse extends JsonResource
             'surname' => $this->surname,
             'telephone' => $this->telephone,
             'role' => $this->role,
-            'products' => ProductResourse::collection($this->products)
+            'products' => ProductProviderResourse::collection($this->products)
         ];
     }
 }

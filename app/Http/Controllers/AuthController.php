@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ClientRegisterRequest;
 use App\Http\Requests\ProviderRegisterRequest;
 use App\Http\Resources\CategoryResourse;
+use App\Http\Resources\ClientResourse;
+use App\Http\Resources\ProviderResourse;
 use App\Http\Resources\UserResourse;
 use App\Models\Category;
 use App\Models\User;
@@ -41,43 +44,17 @@ class AuthController extends Controller
     }
 
     public function registerProvider(ProviderRegisterRequest $request) {
-//        $validator = Validator::make($request->all(), [
-//            'login' => 'required|string|max:255|unique:users',
-//            'password' => 'required|string',
-//        ]);
-//        if($validator->fails()){
-//            return response()->json($validator->errors()->toJson(), 400);
-//        }
-//        $user = User::create(array_merge(
-//            $validator->validated(),
-//            ['password' => bcrypt($request->password), 'role' => 2]
-//        ));
-//        return response()->json([
-//            'message' => 'User successfully registered',
-//            'user' => $user
-//        ], 201);
         $user = User::create(array_merge($request->validated(),
             ['password' => bcrypt($request->password), 'role' => 2]));
-        return new UserResourse($user);
+        return new ProviderResourse($user);
     }
 
-    public function registerClient(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'login' => 'required|string|max:255|unique:users',
-            'password' => 'required|string',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => bcrypt($request->password), 'role' => 3]
-        ));
-        return response()->json([
-            'message' => 'User successfully registered',
-            'user' => $user
-        ], 201);
+    public function registerClient(ClientRegisterRequest $request) {
+        $user = User::create(array_merge($request->validated(),
+            ['password' => bcrypt($request->password), 'role' => 3]));
+        return new ClientResourse($user);
     }
+
 
     /**
      * Get the authenticated User.

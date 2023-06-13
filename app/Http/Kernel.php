@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\BannedMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'provider' => \App\Http\Middleware\ProviderMiddleware::class,
         'client' => \App\Http\Middleware\ClientMiddleware::class,
+        'banned' => \App\Http\Middleware\BannedMiddleware::class,
     ];
 }

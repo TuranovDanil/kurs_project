@@ -34,7 +34,9 @@ Route::group([
     Route::post('register_client', [AuthController::class, 'registerClient']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
+    Route::get('me', [AuthController::class, 'me']);
+    Route::patch('me', [AuthController::class, 'update']);
+    Route::delete('me', [AuthController::class, 'destroy']);
 
 });
 
@@ -44,13 +46,13 @@ Route::get('/', [\App\Http\Controllers\API\RoleController::class, 'index']);
 //admin
 Route::apiResources([
     'users' => UserController::class
-]);
+],['middleware' => ['auth', 'admin']]);
 
 Route::group([
    'prefix' => 'categories',
    'middleware' => ['auth'],
 ], function ($router){
-    Route::get('', [CategoryController::class, 'index']);
+    Route::get('', [CategoryController::class, 'index'])->middleware('banned');
     Route::post('', [CategoryController::class, 'store'])->middleware('admin');
     Route::get('/{category}', [CategoryController::class, 'show'] )->middleware('admin');
     Route::patch('/{category}', [CategoryController::class, 'update'] )->middleware('admin');
@@ -60,12 +62,12 @@ Route::group([
 //provider
 Route::apiResources([
     'provider/products' => ProviderController::class,
-],['middleware' => ['auth', 'provider']]);
+],['middleware' => ['auth', 'provider', 'banned']]);
 
 //client
 Route::group([
     'prefix' => 'products',
-    'middleware' => ['auth','client'],
+    'middleware' => ['auth','client', 'banned'],
 ], function ($router) {
 
     Route::get('', [ProductClientController::class, 'index']);
@@ -75,7 +77,7 @@ Route::group([
 
 Route::apiResources([
     'selected' => SelectedController::class
-],['middleware' => ['auth', 'client']]);
+],['middleware' => ['auth', 'client', 'banned']]);
 
 //not found
 Route::fallback(function (){

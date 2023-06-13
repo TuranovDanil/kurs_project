@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ClientRegisterRequest;
 use App\Http\Requests\ProviderRegisterRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\CategoryResourse;
 use App\Http\Resources\ClientResourse;
 use App\Http\Resources\ProviderResourse;
 use App\Http\Resources\UserProductResourse;
+use App\Http\Resources\UserResourse;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,12 +61,25 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return UserProductResourse
      */
     public function me()
     {
-        return User::find(auth()->user());
+        return new UserProductResourse(auth()->user());
     }
+
+    public function update(UserUpdateRequest $request)
+    {
+        auth()->user()->update($request->validated());
+        return new UserProductResourse(auth()->user());
+    }
+
+    public function destroy(){
+        auth()->user()->delete();
+        return new UserProductResourse(auth()->user());
+    }
+
+
 
     /**
      * Log the user out (Invalidate the token).

@@ -45,10 +45,15 @@ Route::apiResources([
 //Route::get('/categories', [\App\Http\Controllers\API\CategoryController::class, 'index']);
 Route::apiResources([
     'categories' => CategoryController::class
-],['middleware' => 'jwt.auth']);
+],['middleware' => 'auth']);
 Route::apiResources([
     'products' => ProductController::class
 ]);
 Route::apiResources([
     'selected' => SelectedController::class
 ]);
+
+Route::fallback(function (){
+    return response() ->json([
+        'message' => 'Page Not Found'], 404);
+});

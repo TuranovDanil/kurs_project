@@ -22,7 +22,7 @@ class CategoryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:categories|max:255'
+            'name' => 'required|unique:categories|alpha_dash|max:255'
         ];
     }
 }

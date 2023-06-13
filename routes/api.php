@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\ProductClientController;
-use App\Http\Controllers\API\ProviderController;
-use App\Http\Controllers\API\SelectedController;
-use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\Admin\AuthController;
+use App\Http\Controllers\API\Admin\CategoryController;
+use App\Http\Controllers\API\Admin\UserController;
+use App\Http\Controllers\API\Client\ProductClientController;
+use App\Http\Controllers\API\Client\SelectedController;
+use App\Http\Controllers\API\Provider\ProviderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::group([
 
@@ -40,8 +35,6 @@ Route::group([
 
 });
 
-Route::get('/', [\App\Http\Controllers\API\RoleController::class, 'index']);
-//Route::get('/users', [UserController::class, 'index']);
 
 //admin
 Route::apiResources([
@@ -59,10 +52,12 @@ Route::group([
     Route::delete('/{category}', [CategoryController::class, 'destroy'] )->middleware('admin');
 });
 
+
 //provider
 Route::apiResources([
     'provider/products' => ProviderController::class,
 ],['middleware' => ['auth', 'provider', 'banned']]);
+
 
 //client
 Route::group([
@@ -78,6 +73,7 @@ Route::group([
 Route::apiResources([
     'selected' => SelectedController::class
 ],['middleware' => ['auth', 'client', 'banned']]);
+
 
 //not found
 Route::fallback(function (){

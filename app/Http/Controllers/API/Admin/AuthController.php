@@ -1,21 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRegisterRequest;
 use App\Http\Requests\ProviderRegisterRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Http\Resources\CategoryResourse;
-use App\Http\Resources\ClientResourse;
-use App\Http\Resources\ProviderResourse;
-use App\Http\Resources\UserProductResourse;
-use App\Http\Resources\UserResourse;
-use App\Models\Category;
+use App\Http\Resources\ClientResource;
+use App\Http\Resources\ProviderResource;
+use App\Http\Resources\UserProductResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -48,35 +43,35 @@ class AuthController extends Controller
     public function registerProvider(ProviderRegisterRequest $request) {
         $user = User::create(array_merge($request->validated(),
             ['password' => bcrypt($request->password), 'role' => 2]));
-        return new ProviderResourse($user);
+        return new ProviderResource($user);
     }
 
     public function registerClient(ClientRegisterRequest $request) {
         $user = User::create(array_merge($request->validated(),
             ['password' => bcrypt($request->password), 'role' => 3]));
-        return new ClientResourse($user);
+        return new ClientResource($user);
     }
 
 
     /**
      * Get the authenticated User.
      *
-     * @return UserProductResourse
+     * @return UserResource
      */
     public function me()
     {
-        return new UserProductResourse(auth()->user());
+        return new UserResource(auth()->user());
     }
 
     public function update(UserUpdateRequest $request)
     {
         auth()->user()->update($request->validated());
-        return new UserProductResourse(auth()->user());
+        return new UserResource(auth()->user());
     }
 
     public function destroy(){
         auth()->user()->delete();
-        return new UserProductResourse(auth()->user());
+        return new UserResource(auth()->user());
     }
 
 

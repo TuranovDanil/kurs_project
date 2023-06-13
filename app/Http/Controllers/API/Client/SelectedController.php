@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductProviderResourse;
-use App\Http\Resources\SelectedResourse;
-use App\Models\Product;
+use App\Http\Resources\SelectedResource;
 use App\Models\Selected;
-use Illuminate\Http\Request;
 
 class SelectedController extends Controller
 {
@@ -16,7 +13,7 @@ class SelectedController extends Controller
      */
     public function index()
     {
-        return SelectedResourse::collection(Selected::where('client_id', auth()->user()->id)->get());
+        return SelectedResource::collection(Selected::where('client_id', auth()->user()->id)->get());
     }
 
     /**
@@ -28,7 +25,7 @@ class SelectedController extends Controller
             return response()->json([
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
-        return new SelectedResourse($selected);
+        return new SelectedResource($selected);
     }
 
     /**
@@ -41,6 +38,6 @@ class SelectedController extends Controller
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
         $selected->delete();
-        return new SelectedResourse($selected);
+        return new SelectedResource($selected);
     }
 }

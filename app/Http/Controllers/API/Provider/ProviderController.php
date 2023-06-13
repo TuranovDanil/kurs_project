@@ -1,19 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Provider;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductDeactivationRequest;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
-use App\Http\Resources\CategoryResourse;
-use App\Http\Resources\ClientResourse;
-use App\Http\Resources\ProductProviderResourse;
-use App\Http\Resources\UserProductResourse;
-use App\Models\Category;
+use App\Http\Resources\ProductProviderResource;
 use App\Models\Product;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class ProviderController extends Controller
 {
@@ -22,7 +16,7 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        return ProductProviderResourse::collection(Product::where('user_id', auth()->user()->id)->get());
+        return ProductProviderResource::collection(Product::where('user_id', auth()->user()->id)->get());
     }
 
     /**
@@ -32,7 +26,7 @@ class ProviderController extends Controller
     {
         $product = Product::create(array_merge($request->validated(),
             ['user_id' => auth()->user()->id]));
-        return new ProductProviderResourse($product);
+        return new ProductProviderResource($product);
     }
 
     /**
@@ -44,7 +38,7 @@ class ProviderController extends Controller
             return response()->json([
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
-        return new ProductProviderResourse($product);
+        return new ProductProviderResource($product);
     }
 
     /**
@@ -57,7 +51,7 @@ class ProviderController extends Controller
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
         $product->update($request->validated());
-        return new ProductProviderResourse($product);
+        return new ProductProviderResource($product);
     }
 
     /**
@@ -70,7 +64,7 @@ class ProviderController extends Controller
                 'error' => ['code' => '403','message' => 'Forbidden for you']], 403);
         }
         $product->delete();
-        return new ProductProviderResourse($product);
+        return new ProductProviderResource($product);
     }
 
 }

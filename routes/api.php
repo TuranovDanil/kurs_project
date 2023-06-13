@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\SelectedController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,12 +23,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group([
+
+    'middleware' => 'api',
+], function ($router) {
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register_provider', [AuthController::class, 'registerProvider']);
+    Route::post('register_client', [AuthController::class, 'registerClient']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+
+});
+
 Route::get('/', [\App\Http\Controllers\API\RoleController::class, 'index']);
 //Route::get('/users', [UserController::class, 'index']);
 Route::apiResources([
     'users' => UserController::class
-]);
-Route::get('/categories', [\App\Http\Controllers\API\CategoryController::class, 'index']);
+], );
+//Route::get('/categories', [\App\Http\Controllers\API\CategoryController::class, 'index']);
+Route::apiResources([
+    'categories' => CategoryController::class
+],['middleware' => 'jwt.auth']);
 Route::apiResources([
     'products' => ProductController::class
 ]);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\ProviderController;
 use App\Http\Controllers\API\SelectedController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\AuthController;
@@ -43,15 +44,26 @@ Route::apiResources([
     'users' => UserController::class
 ], );
 //Route::get('/categories', [\App\Http\Controllers\API\CategoryController::class, 'index']);
+
+//Route::apiResources([
+//    'categories' => CategoryController::class
+//],['middleware' => 'auth']);
+
 Route::apiResources([
     'categories' => CategoryController::class
-],['middleware' => 'auth']);
+],['middleware' => ['auth', 'admin']]);
+
 Route::apiResources([
     'products' => ProductController::class
 ]);
 Route::apiResources([
     'selected' => SelectedController::class
 ]);
+
+Route::apiResources([
+    'provider/products' => ProviderController::class,
+],['middleware' => ['auth', 'provider']]);
+
 
 Route::fallback(function (){
     return response() ->json([

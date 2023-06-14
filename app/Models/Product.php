@@ -26,5 +26,8 @@ class Product extends Model
     public function selected(): HasMany{
         return $this->hasMany(Selected::class);
     }
+    public function provider(){
+        return$this->belongsTo(User::class, 'user_id', 'id');
+    }
 
 }
